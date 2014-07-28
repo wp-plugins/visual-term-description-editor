@@ -8,12 +8,13 @@
  * Author URI:  http://bungeshea.com
  * License:     MIT
  * License URI: http://opensource.com/licences/MIT
- * Version:     1.0
+ * Version:     1.1.1
  */
 
 /* Exit if accessed directly */
-if ( ! defined( 'ABSPATH' ) )
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
 
 class Visual_Term_Description_Editor {
 
@@ -23,7 +24,7 @@ class Visual_Term_Description_Editor {
 	 * @since 1.0
 	 * @var   array
 	 */
-	public $taxonomies ;
+	public $taxonomies;
 
 	/**
 	 * The constructor function for the class
@@ -65,11 +66,8 @@ class Visual_Term_Description_Editor {
 	public function render_field_edit( $tag, $taxonomy ) {
 
 		$settings = array(
-			'quicktags'     => array( 'buttons' => 'em,strong,link' ),
 			'textarea_name' => 'description',
-			'quicktags'     => true,
-			'tinymce'       => true,
-			'editor_css'    => '<style>#wp-html-description-editor-container .wp-editor-area { height: 250px; }</style>'
+			'textarea_rows' => 10,
 		);
 
 		?>
@@ -96,11 +94,10 @@ class Visual_Term_Description_Editor {
 	public function render_field_add( $taxonomy ) {
 
 		$settings = array(
-			'quicktags'    => array( 'buttons' => 'em,strong,link' ),
-			'textarea_name'=> 'description',
-			'quicktags'    => true,
-			'tinymce'      => true,
-			'editor_css'   => '<style>#wp-html-tag-description-editor-container .wp-editor-area { height: 150px; }</style>'
+			'textarea_name' => 'description',
+			'textarea_rows' => 7,
+			'teeny'         => true,
+			'media_buttons' => false,
 		);
 
 		?>
@@ -115,9 +112,9 @@ class Visual_Term_Description_Editor {
 				jQuery(function() {
 					// Trigger save
 					jQuery( '#addtag' ).on( 'mousedown', '#submit', function() {
-				   		tinyMCE.triggerSave();
-				    });
-			    });
+							tinyMCE.triggerSave();
+						});
+					});
 
 			</script>
 		</div>
@@ -141,4 +138,17 @@ function visual_term_description_editor() {
 	/* Initialize the class */
 	$GLOBALS['visual-term-description-editor'] = new Visual_Term_Description_Editor( $taxonomies );
 }
-add_action( 'init', 'visual_term_description_editor' );
+add_action( 'wp_loaded', 'visual_term_description_editor', 999 );
+
+/**
+ * Fix the formatting buttons on the HTML section of
+ * the visual editor from being full-width
+ *
+ * @since  1.1
+ * @return void
+ */
+function fix_visual_term_description_editor_style() {
+	echo '<style>.quicktags-toolbar input { width: auto; }</style>';
+}
+
+add_action( 'admin_head-edit-tags.php', 'fix_visual_term_description_editor_style' );
