@@ -8,7 +8,7 @@
  * Author URI:  http://bungeshea.com
  * License:     MIT
  * License URI: http://opensource.com/licences/MIT
- * Version:     1.1
+ * Version:     1.1.1
  */
 
 /* Exit if accessed directly */
@@ -24,7 +24,7 @@ class Visual_Term_Description_Editor {
 	 * @since 1.0
 	 * @var   array
 	 */
-	public $taxonomies ;
+	public $taxonomies;
 
 	/**
 	 * The constructor function for the class
@@ -138,7 +138,7 @@ function visual_term_description_editor() {
 	/* Initialize the class */
 	$GLOBALS['visual-term-description-editor'] = new Visual_Term_Description_Editor( $taxonomies );
 }
-add_action( 'init', 'visual_term_description_editor' );
+add_action( 'wp_loaded', 'visual_term_description_editor', 999 );
 
 /**
  * Fix the formatting buttons on the HTML section of
