@@ -8,7 +8,7 @@
  * Author URI:  http://bungeshea.com
  * License:     MIT
  * License URI: http://opensource.com/licences/MIT
- * Version:     1.1.1
+ * Version:     1.2
  */
 
 /* Exit if accessed directly */
@@ -46,6 +46,12 @@ class Visual_Term_Description_Editor {
 		/* Remove the filters which disallow HTML in term descriptions */
 		remove_filter( 'pre_term_description', 'wp_filter_kses' );
 		remove_filter( 'term_description', 'wp_kses_data' );
+
+		/* Evaluate shortcodes */
+		add_filter( 'term_description', 'do_shortcode' );
+
+		/* Convert smilies */
+		add_filter( 'term_description', 'convert_smilies' );
 
 		/* Loop through the taxonomies, adding actions */
 		foreach ( $this->taxonomies as $taxonomy ) {
@@ -96,8 +102,6 @@ class Visual_Term_Description_Editor {
 		$settings = array(
 			'textarea_name' => 'description',
 			'textarea_rows' => 7,
-			'teeny'         => true,
-			'media_buttons' => false,
 		);
 
 		?>
